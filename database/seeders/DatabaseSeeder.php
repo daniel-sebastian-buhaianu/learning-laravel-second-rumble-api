@@ -16,9 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(UserSeeder::class);
-
-        Channel::factory(10)->create();
-
-        Video::factory(20)->create();
+        $this->call(ChannelSeeder::class);
+        $this->call(VideoSeeder::class);
+        $this->call(TagSeeder::class);
     }
 }
