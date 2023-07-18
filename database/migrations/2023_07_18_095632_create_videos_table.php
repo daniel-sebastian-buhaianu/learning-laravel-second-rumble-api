@@ -12,7 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('videos', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary();
+            $table->foreignId('channel_id')->constrained()->cascadeOnDelete();
+            $table->string('url');
+            $table->string('src');
+            $table->string('title');
+            $table->text('description');
+            $table->unsignedSmallInteger('likes_count');
+            $table->unsignedSmallInteger('dislikes_count');
+            $table->unsignedSmallInteger('comments_count');
+            $table->unsignedBigInteger('views_count');
+            $table->date('uploaded_at');
             $table->timestamps();
         });
     }
