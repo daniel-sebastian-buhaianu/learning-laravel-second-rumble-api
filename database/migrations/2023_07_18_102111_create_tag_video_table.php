@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('tag_video', function (Blueprint $table) {
             $table->unsignedBigInteger('tag_id');
             $table->string('video_id');
-            $table->timestamps();
 
             $table->foreign('tag_id')
                 ->references('id')
