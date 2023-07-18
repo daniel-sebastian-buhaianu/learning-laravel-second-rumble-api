@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('url')->unique();
             $table->string('src')->unique();
             $table->string('title');
-            $table->text('description');
-            $table->unsignedSmallInteger('likes_count');
-            $table->unsignedSmallInteger('dislikes_count');
-            $table->unsignedSmallInteger('comments_count');
-            $table->unsignedBigInteger('views_count');
+            $table->text('description')->nullable();
+            $table->unsignedSmallInteger('likes_count')->default(0);
+            $table->unsignedSmallInteger('dislikes_count')->default(0);
+            $table->unsignedSmallInteger('comments_count')->default(0);
+            $table->unsignedBigInteger('views_count')->default(0);
             $table->date('uploaded_at');
             $table->timestamps();
 
