@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory(10)->create();
+
+        \App\Models\Channel::factory(10)->create();
     }
 }
