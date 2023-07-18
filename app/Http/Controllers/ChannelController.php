@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Channel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreChannelRequest;
 
 class ChannelController extends Controller
 {
@@ -19,9 +20,12 @@ class ChannelController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreChannelRequest $request)
     {
-        //
+        return [
+            'data' => request('url'),
+            'message' => 'passed validation'
+        ];
     }
 
     /**

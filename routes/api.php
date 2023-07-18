@@ -15,5 +15,6 @@ use App\Http\Controllers\ChannelController;
 |
 */
 Route::get('/channels', [ChannelController::class, 'index']);
+Route::post('/channels', [ChannelController::class, 'store']);
 Route::get('/channels/{id}', [ChannelController::class, 'show']);
 Route::delete('/channels/{id}', [ChannelController::class, 'destroy']);
