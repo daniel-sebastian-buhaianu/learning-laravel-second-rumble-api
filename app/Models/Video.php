@@ -10,6 +10,13 @@ class Video extends Model
 {
     use HasFactory;
 
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);

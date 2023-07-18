@@ -10,6 +10,13 @@ class Channel extends Model
 {
     use HasFactory;
 
+    /**
+     * Indicates if the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
     public function videos()
     {
         return $this->hasMany(Video::class);
