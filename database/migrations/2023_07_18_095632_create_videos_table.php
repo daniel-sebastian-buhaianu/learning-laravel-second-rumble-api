@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('channel_id');
-            $table->string('url');
-            $table->string('src');
+            $table->string('url')->unique();
+            $table->string('src')->unique();
             $table->string('title');
             $table->text('description');
             $table->unsignedSmallInteger('likes_count');
