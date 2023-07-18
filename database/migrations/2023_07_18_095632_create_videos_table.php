@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('channel_id')->constrained()->cascadeOnDelete();
+            $table->string('channel_id');
             $table->string('url');
             $table->string('src');
             $table->string('title');
@@ -24,6 +24,12 @@ return new class extends Migration
             $table->unsignedBigInteger('views_count');
             $table->date('uploaded_at');
             $table->timestamps();
+
+            $table->foreign('channel_id')
+                ->references('id')
+                ->on('channels')
+                ->constrained()
+                ->cascadeOnDelete();
         });
     }
 
