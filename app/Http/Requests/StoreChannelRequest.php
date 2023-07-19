@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\HttpStatusCode200;
+use App\Rules\HasAboutPage;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreChannelRequest extends FormRequest
@@ -28,7 +29,8 @@ class StoreChannelRequest extends FormRequest
                 'required', 
                 'starts_with:https://rumble.com/c/', 
                 'active_url',
-                new HttpStatusCode200, 
+                new HttpStatusCode200,
+                new HasAboutPage, 
             ],
         ];
     }
