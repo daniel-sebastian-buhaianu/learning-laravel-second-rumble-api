@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Channel;
 use Illuminate\Http\Request;
+use App\WebPages\Rumble\ChannelAboutPage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\StoreChannelRequest;
+use App\Helpers\ConversionHelper as Convert;
 
 class ChannelController extends Controller
 {
@@ -20,12 +23,26 @@ class ChannelController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreChannelRequest $request)
+    public function store(StoreChannelRequest $request, \DOMDocument $doc)
     {
-        return [
-            'data' => request('url'),
-            'message' => 'passed validation'
-        ];
+        $channel = new ChannelAboutPage(request('url'));
+
+        try {
+            return Channel::create([
+                'id' => $channel->id(),
+                'name' => $channel->name(),
+                'description' => $channel->description(),
+                'banner' => $channel->banner(),
+                'avatar' => $channel->avatar(),
+                'followers_count' => Convert::countStringToInt($channel->followersCount()),
+                'videos_count' => Convert::countStringToInt($channel->videosCount()),
+                'joined_at' => Convert::dateStringToMySQLDate($channel->joiningDate())
+            ]);
+        } catch (\Exception $e) {
+            return [
+                'message' => $e->getMessage()
+            ];
+        }
     }
 
     /**

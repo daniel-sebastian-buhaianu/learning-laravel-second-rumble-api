@@ -17,6 +17,16 @@ class Channel extends Model
      */
     public $incrementing = false;
 
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
+
+    /**
+     * Define one to many relationship: a channel has many videos.
+     */
     public function videos()
     {
         return $this->hasMany(Video::class);

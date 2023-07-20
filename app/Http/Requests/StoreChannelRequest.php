@@ -27,7 +27,8 @@ class StoreChannelRequest extends FormRequest
             'url' => [
                 'bail', 
                 'required', 
-                'starts_with:https://rumble.com/c/', 
+                'starts_with:https://rumble.com/c/',
+                'doesnt_end_with:/', 
                 'active_url',
                 new HttpStatusCode200,
                 new HasAboutPage, 
