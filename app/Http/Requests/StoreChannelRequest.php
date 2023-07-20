@@ -29,10 +29,23 @@ class StoreChannelRequest extends FormRequest
                 'required', 
                 'starts_with:https://rumble.com/c/',
                 'doesnt_end_with:/', 
+                'unique:channels',
                 'active_url',
                 new HttpStatusCode200,
                 new HasAboutPage, 
             ],
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'url.unique' => 'This channel already exists.',
         ];
     }
 }

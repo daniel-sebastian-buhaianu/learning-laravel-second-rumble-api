@@ -30,6 +30,7 @@ class ChannelController extends Controller
         try {
             return Channel::create([
                 'id' => $channel->id(),
+                'url' => request('url'),
                 'name' => $channel->name(),
                 'description' => $channel->description(),
                 'banner' => $channel->banner(),
