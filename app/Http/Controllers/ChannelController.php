@@ -40,9 +40,9 @@ class ChannelController extends Controller
                 'joined_at' => Convert::dateStringToMySQLDate($channel->joiningDate())
             ]);
         } catch (\Exception $e) {
-            return [
+            return response([
                 'message' => $e->getMessage()
-            ];
+            ], 500);
         }
     }
 
