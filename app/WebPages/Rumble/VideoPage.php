@@ -80,14 +80,30 @@ class VideoPage
 
         // Case 1: short description
         $elements = $xpath->query('//p[@class="media-description"]');
+
         if ($elements->length > 0) return $elements->item(0)->textContent;
 
         // Case 2: long description
-        $elements = $xpath->query('//p[@class="media-description media-description--first"]/text()');
+        $elements = $xpath->query('//p[@class="media-description media-description--first"]');
+
         if ($elements->length > 0) {
-            $description = trim($elements->item(0)->textContent);
+            $description = $elements->item(0)->textContent;
+            
+            // Remove "Show more" suffix (the last 9 characters)
+            $description = substr($description, 0, -9);
+
+            // Add a white space at the end of each string
+            $description .= ' ';
+
             $elements = $xpath->query('//p[@class="media-description media-description--more"]');
-            $description .= ' ' . trim($elements->item(0)->textContent);
+
+            foreach ($elements as $element) {
+                $description .= $element->textContent . ' ';
+
+                // Add a white space before "https://" if there is no white space before it already
+                $description = preg_replace('/(?<!\s)https:\/\//', ' https://', $description);
+            }
+
             return $description;
         }
 
