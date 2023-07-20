@@ -136,4 +136,17 @@ class VideoPage
 
         return ($elements->length > 0) ? $elements->item(0)->textContent : null;
     }
+
+    public function commentsCount()
+    {
+        $xpath = $this->dom['xpath'];
+
+        if (empty($xpath)) {
+            throw new Exception('xpath is empty');
+        }
+
+        $elements = $xpath->query('//div[@class="video-counters--item video-item--comments"]');
+
+        return ($elements->length > 0) ? trim($elements->item(0)->textContent) : null;
+    }
 }
