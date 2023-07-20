@@ -110,4 +110,17 @@ class VideoPage
         // Case 3: no description
         return null;
     }
+
+    public function likesCount()
+    {
+        $xpath = $this->dom['xpath'];
+
+        if (empty($xpath)) {
+            throw new Exception('xpath is empty');
+        }
+
+        $elements = $xpath->query('//span[@class="rumbles-up-votes"]');
+
+        return ($elements->length > 0) ? $elements->item(0)->textContent : null;
+    }
 }
