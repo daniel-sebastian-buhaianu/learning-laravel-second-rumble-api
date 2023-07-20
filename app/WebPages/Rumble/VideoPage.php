@@ -56,4 +56,17 @@ class VideoPage
 
         return ($elements->length > 0) ? trim($elements->item(0)->textContent) : null;
     }
+
+    public function title()
+    {
+        $xpath = $this->dom['xpath'];
+
+        if (empty($xpath)) {
+            throw new Exception('xpath is empty');
+        }
+
+        $elements = $xpath->query('//h1[@class="h1"]');
+
+        return ($elements->length > 0) ? $elements->item(0)->textContent : null;
+    }
 }
