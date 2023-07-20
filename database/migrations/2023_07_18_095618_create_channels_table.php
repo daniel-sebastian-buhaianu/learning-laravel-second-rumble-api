@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('channels', function (Blueprint $table) {
             $table->string('id')->primary();
+            $table->string('url')->unique();
             $table->string('name')->unique();
             $table->string('description')->nullable();
             $table->string('banner')->nullable();

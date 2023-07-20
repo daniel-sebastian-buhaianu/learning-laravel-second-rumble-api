@@ -22,6 +22,7 @@ class ChannelFactory extends Factory
         
         return [
             'id' => $id,
+            'url' => 'https://rumble.com/c/' . $id,
             'name' => $name,
             'description' => fake()->text(),
             'followers_count' => fake()->randomNumber(),
