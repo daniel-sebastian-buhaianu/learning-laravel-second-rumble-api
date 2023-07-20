@@ -7,6 +7,24 @@ use \DateTime;
 class ConversionHelper
 {
     /**
+     * Convert an ISO8601 date to date string format: "Month Day, Year".
+     * 
+     * Example:
+     * - "2023-07-18T20:00:00+00:00" => "July 18, 2023"
+     *
+     * @param string $inputDate The ISO8601 date to convert.
+     * @return string The date in date string format(Month Day, Year), or null if invalid.
+     */
+    static public function ISO8601ToDateString(string $inputDate): ?string
+    {
+        // Create a DateTime object from the input date string
+         $date = new DateTime($inputDate);
+
+        // Convert the DateTime object to the date string format
+         return $date ? $date->format('F j, Y') : null;
+    }
+
+    /**
      * Convert a date string in the format "Aug 19, 2022" to MySQL date format (YYYY-MM-DD).
      *
      * @param string $inputDate The date string to convert.
