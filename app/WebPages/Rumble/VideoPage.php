@@ -5,6 +5,7 @@ namespace App\WebPages\Rumble;
 use \DOMXpath;
 use \DOMDocument;
 use Illuminate\Support\Facades\Cache;
+use App\Helpers\ConversionHelper as Convert;
 
 class VideoPage
 {
@@ -161,5 +162,31 @@ class VideoPage
         $elements = $xpath->query('//div[@class="video-counters--item video-item--views"]');
 
         return ($elements->length > 0) ? trim($elements->item(0)->textContent) : null;
+    }
+
+    public function uploadedAt()
+    {
+        $xpath = $this->dom['xpath'];
+
+        if (empty($xpath)) {
+            throw new Exception('xpath is empty');
+        }
+
+        // Case 1: Normal video
+        $elements = $xpath->query('//div[@class="media-published"]');
+
+        if ($elements->length > 0) return $elements->item(0)->getAttribute('title');
+
+        // Case 2: Livestream which has ended
+        $elements = $xpath->query('//div[@class="streamed-on"]/time');
+
+        if ($elements->length > 0) {
+            $date = $elements->item(0)->getAttribute('datetime');
+
+            return Convert::ISO8601ToDateString($date);
+        }
+
+        // Case 3: Livestream which has NOT ended, or other
+        return null;
     }
 }
