@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Channel;
 use Illuminate\Http\Request;
-use App\WebPages\Rumble\ChannelAboutPage;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use App\WebPages\Rumble\ChannelAboutPage;
 use App\Http\Requests\StoreChannelRequest;
+use App\Http\Requests\UpdateChannelRequest;
 use App\Helpers\ConversionHelper as Convert;
 
 class ChannelController extends Controller
@@ -57,9 +59,30 @@ class ChannelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateChannelRequest $request, string $id)
     {
-        //
+        $channel = Channel::findOrFail($id);
+
+        $request->validate([
+            'name' => [Rule::unique('channels')->ignore($channel)]
+        ]);
+
+        try {
+            $channel->update([
+                'name' => $request->input('name', $channel->name),
+                'description' => $request->input('description', $channel->description),
+                'banner' => $request->input('banner', $channel->banner),
+                'avatar' => $request->input('avatar', $channel->avatar),
+                'followers_count' => $request->input('followers_count', $channel->followers_count),
+                'videos_count' => $request->input('videos_count', $channel->videos_count)
+            ]);
+        } catch(\Exception $e) {
+            return response([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        return $channel;
     }
 
     /**
