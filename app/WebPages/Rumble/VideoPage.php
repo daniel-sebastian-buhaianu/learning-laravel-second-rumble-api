@@ -69,4 +69,29 @@ class VideoPage
 
         return ($elements->length > 0) ? $elements->item(0)->textContent : null;
     }
+
+    public function description()
+    {
+        $xpath = $this->dom['xpath'];
+
+        if (empty($xpath)) {
+            throw new Exception('xpath is empty');
+        }
+
+        // Case 1: short description
+        $elements = $xpath->query('//p[@class="media-description"]');
+        if ($elements->length > 0) return $elements->item(0)->textContent;
+
+        // Case 2: long description
+        $elements = $xpath->query('//p[@class="media-description media-description--first"]/text()');
+        if ($elements->length > 0) {
+            $description = trim($elements->item(0)->textContent);
+            $elements = $xpath->query('//p[@class="media-description media-description--more"]');
+            $description .= ' ' . trim($elements->item(0)->textContent);
+            return $description;
+        }
+
+        // Case 3: no description
+        return null;
+    }
 }
