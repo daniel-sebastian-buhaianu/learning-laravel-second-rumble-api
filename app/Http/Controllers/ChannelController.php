@@ -6,7 +6,6 @@ use App\Models\Channel;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use App\WebPages\Rumble\ChannelAboutPage;
 use App\Http\Requests\StoreChannelRequest;
 use App\Http\Requests\UpdateChannelRequest;
@@ -25,7 +24,7 @@ class ChannelController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreChannelRequest $request, \DOMDocument $doc)
+    public function store(StoreChannelRequest $request)
     {
         $channel = new ChannelAboutPage(request('url'));
 
