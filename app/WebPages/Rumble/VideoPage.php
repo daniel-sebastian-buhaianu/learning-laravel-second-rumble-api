@@ -43,4 +43,17 @@ class VideoPage
 
         return str_replace('https://rumble.com/', '', $this->url);
     }
+
+    public function channelName()
+    {
+        $xpath = $this->dom['xpath'];
+
+        if (empty($xpath)) {
+            throw new Exception('xpath is empty');
+        }
+
+        $elements = $xpath->query('//div[@class="media-heading-name"]');
+
+        return ($elements->length > 0) ? trim($elements->item(0)->textContent) : null;
+    }
 }
