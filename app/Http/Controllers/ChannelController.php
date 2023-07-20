@@ -51,7 +51,7 @@ class ChannelController extends Controller
      */
     public function show(string $id)
     {
-        return Channel::find($id);
+        return Channel::findOrFail($id);
     }
 
     /**
