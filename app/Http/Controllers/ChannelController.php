@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Channel;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
 use App\WebPages\Rumble\ChannelAboutPage;
 use App\Http\Requests\StoreChannelRequest;
 use App\Http\Requests\UpdateChannelRequest;
@@ -18,7 +17,7 @@ class ChannelController extends Controller
      */
     public function index()
     {
-        return DB::table('channels')->paginate();
+        return Channel::paginate();
     }
 
     /**

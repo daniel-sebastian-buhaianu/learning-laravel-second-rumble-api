@@ -7,7 +7,6 @@ use App\Models\Video;
 use App\Models\Channel;
 use Illuminate\Http\Request;
 use App\WebPages\Rumble\VideoPage;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreVideoRequest;
 use App\Http\Requests\UpdateVideoRequest;
 use App\Helpers\ConversionHelper as Convert;
@@ -19,7 +18,7 @@ class VideoController extends Controller
      */
     public function index()
     {
-        return DB::table('videos')->paginate();
+        return Video::paginate();
     }
 
     /**
