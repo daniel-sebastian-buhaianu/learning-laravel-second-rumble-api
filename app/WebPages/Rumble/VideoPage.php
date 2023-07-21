@@ -178,4 +178,13 @@ class VideoPage
 
         return $videoData['uploadDate'];
     }
+
+    public function duration()
+    {
+        $videoData = $this->apiData[0];
+
+        if (empty($videoData)) return null;
+
+        return $videoData['duration'];
+    }
 }
