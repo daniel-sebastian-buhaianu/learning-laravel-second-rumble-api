@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\WebPages\Rumble\VideoPage;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreVideoRequest;
+use App\Http\Requests\UpdateVideoRequest;
 use App\Helpers\ConversionHelper as Convert;
 
 class VideoController extends Controller
@@ -82,9 +83,28 @@ class VideoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateVideoRequest $request, string $id)
     {
-        //
+        $video = Video::findOrFail($id);
+
+        try {
+            $video->update([
+                'src' => $request->input('src', $video->src),
+                'name' => $request->input('name', $video->name),
+                'thumbnail' => $request->input('thumbnail', $video->thumbnail),
+                'description' => $request->input('description', $video->description),
+                'likes_count' => $request->input('likes_count', $video->likes_count),
+                'dislikes_count' => $request->input('dislikes_count', $video->dislikes_count),
+                'comments_count' => $request->input('comments_count', $video->comments_count),
+                'views_count' => $request->input('views_count', $video->views_count)
+            ]);
+        } catch(\Exception $e) {
+            return response([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        return $video;
     }
 
     /**
