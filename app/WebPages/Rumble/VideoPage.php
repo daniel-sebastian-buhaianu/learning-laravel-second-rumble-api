@@ -73,6 +73,15 @@ class VideoPage
         return $videoData['url'];
     }
 
+    public function src()
+    {
+        $videoData = $this->apiData[0];
+
+        if (empty($videoData)) return null;
+
+        return $videoData['embedUrl'];
+    }
+
     public function channelName()
     {
         $xpath = $this->dom['xpath'];
