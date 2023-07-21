@@ -76,7 +76,7 @@ class VideoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Video::findOrFail($id);
     }
 
     /**
