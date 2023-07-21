@@ -82,6 +82,15 @@ class VideoPage
         return $videoData['embedUrl'];
     }
 
+    public function name()
+    {
+        $videoData = $this->apiData[0];
+
+        if (empty($videoData)) return null;
+
+        return $videoData['name'];
+    }
+
     public function channelName()
     {
         $xpath = $this->dom['xpath'];
@@ -93,19 +102,6 @@ class VideoPage
         $elements = $xpath->query('//div[@class="media-heading-name"]');
 
         return ($elements->length > 0) ? trim($elements->item(0)->textContent) : null;
-    }
-
-    public function title()
-    {
-        $xpath = $this->dom['xpath'];
-
-        if (empty($xpath)) {
-            throw new Exception('xpath is empty');
-        }
-
-        $elements = $xpath->query('//h1[@class="h1"]');
-
-        return ($elements->length > 0) ? $elements->item(0)->textContent : null;
     }
 
     public function description()
