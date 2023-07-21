@@ -122,7 +122,7 @@ class VideoPage
         return ($elements->length > 0) ? trim($elements->item(0)->textContent) : null;
     }
 
-    public function likesCount()
+    public function likes()
     {
         $xpath = $this->dom['xpath'];
 
@@ -135,7 +135,7 @@ class VideoPage
         return ($elements->length > 0) ? $elements->item(0)->textContent : null;
     }
 
-    public function dislikesCount()
+    public function dislikes()
     {
         $xpath = $this->dom['xpath'];
 
@@ -148,7 +148,7 @@ class VideoPage
         return ($elements->length > 0) ? $elements->item(0)->textContent : null;
     }
 
-    public function commentsCount()
+    public function comments()
     {
         $xpath = $this->dom['xpath'];
 
@@ -161,17 +161,13 @@ class VideoPage
         return ($elements->length > 0) ? trim($elements->item(0)->textContent) : null;
     }
 
-    public function viewsCount()
+    public function views()
     {
-        $xpath = $this->dom['xpath'];
+        $videoData = $this->apiData[0];
 
-        if (empty($xpath)) {
-            throw new Exception('xpath is empty');
-        }
+        if (empty($videoData)) return null;
 
-        $elements = $xpath->query('//div[@class="video-counters--item video-item--views"]');
-
-        return ($elements->length > 0) ? trim($elements->item(0)->textContent) : null;
+        return $videoData['interactionStatistic']['userInteractionCount'];
     }
 
     public function uploadedAt()
