@@ -24,6 +24,7 @@ Route::post('/register', [RegistrationController::class, 'store']);
 // User
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
+Route::patch('/users/{id}', [UserController::class, 'update']);
 
 // Channel 
 Route::get('/channels', [ChannelController::class, 'index']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -30,7 +31,25 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'email' => ['email', 'max:255', Rule::unique('users')->ignore($user)],
+            'is_admin' => ['boolean']
+        ]);
+
+        try {
+            $user->update([
+                'email' => $request->input('email', $user->email),
+                'is_admin' => $request->input('is_admin', $user->is_admin),
+            ]);
+        } catch(\Exception $e) {
+            return response([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        return $user;
     }
 
     /**
