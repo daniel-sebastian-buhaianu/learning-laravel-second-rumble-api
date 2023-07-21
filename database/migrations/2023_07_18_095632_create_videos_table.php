@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('channel_id');
             $table->string('url')->unique();
             $table->string('src')->unique();
-            $table->string('title');
+            $table->string('name');
+            $table->string('thumbnail')->default('https://www.pngkit.com/png/full/267-2678423_bacteria-video-thumbnail-default.png');
             $table->text('description')->nullable();
             $table->unsignedSmallInteger('likes_count')->default(0);
             $table->unsignedSmallInteger('dislikes_count')->default(0);
@@ -30,6 +31,8 @@ return new class extends Migration
                 ->on('channels')
                 ->constrained()
                 ->cascadeOnDelete();
+
+            $table->index('name');
         });
     }
 
