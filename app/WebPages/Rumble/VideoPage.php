@@ -11,6 +11,7 @@ class VideoPage
 {
     protected $url;
     protected $dom = [];
+    protected $apiData = [];
 
     public function __construct(string $url)
     {
@@ -34,15 +35,33 @@ class VideoPage
             'doc' => $doc,
             'xpath' => new DOMXpath($doc)
         ];
+        $this->apiData = $this->apiData();
+    }
+
+    public function apiData()
+    {
+        $xpath = $this->dom['xpath'];
+
+        if (empty($xpath)) {
+            throw new Exception('xpath is empty');
+        }
+
+        $elements = $xpath->query('//script[@type="application/ld+json"]');
+        
+        return ($elements->length > 0) ? json_decode($elements->item(0)->textContent, true) : null;
     }
 
     public function id()
     {
-        if (empty($this->url)) {
-            throw new Exception('url is empty');
-        }
+        $videoData = $this->apiData[0];
 
-        return str_replace('https://rumble.com/', '', $this->url);
+        if (empty($videoData)) return null;
+
+        $id = str_replace('https://rumble.com/embed/', '', $videoData['embedUrl']);
+
+        if (empty($id)) return null;
+
+        return str_replace('/', '', $id);
     }
 
     public function channelName()
