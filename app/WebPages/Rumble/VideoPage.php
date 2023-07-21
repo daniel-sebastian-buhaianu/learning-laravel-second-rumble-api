@@ -148,7 +148,7 @@ class VideoPage
         return ($elements->length > 0) ? $elements->item(0)->textContent : null;
     }
 
-    public function comments()
+    public function commentsCount()
     {
         $xpath = $this->dom['xpath'];
 
@@ -170,29 +170,12 @@ class VideoPage
         return $videoData['interactionStatistic']['userInteractionCount'];
     }
 
-    public function uploadedAt()
+    public function uploadDate()
     {
-        $xpath = $this->dom['xpath'];
+        $videoData = $this->apiData[0];
 
-        if (empty($xpath)) {
-            throw new Exception('xpath is empty');
-        }
+        if (empty($videoData)) return null;
 
-        // Case 1: Normal video
-        $elements = $xpath->query('//div[@class="media-published"]');
-
-        if ($elements->length > 0) return $elements->item(0)->getAttribute('title');
-
-        // Case 2: Livestream which has ended
-        $elements = $xpath->query('//div[@class="streamed-on"]/time');
-
-        if ($elements->length > 0) {
-            $date = $elements->item(0)->getAttribute('datetime');
-
-            return Convert::ISO8601ToDateString($date);
-        }
-
-        // Case 3: Livestream which has NOT ended, or other
-        return null;
+        return $videoData['uploadDate'];
     }
 }
