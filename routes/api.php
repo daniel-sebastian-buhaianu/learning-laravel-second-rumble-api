@@ -25,4 +25,5 @@ Route::delete('/channels/{id}', [ChannelController::class, 'destroy']);
 
 // Video
 Route::get('/videos', [VideoController::class, 'index']);
-// Route::post('/videos', [VideoController::class, 'store']);
+Route::post('/videos', [VideoController::class, 'store']);
+Route::delete('/videos/{id}', [VideoController::class, 'destroy']);
