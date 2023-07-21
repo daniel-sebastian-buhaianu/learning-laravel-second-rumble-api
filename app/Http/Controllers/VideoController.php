@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\WebPages\Rumble\VideoPage;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreVideoRequest;
 
 class VideoController extends Controller
 {
@@ -18,9 +20,9 @@ class VideoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreVideoRequest $request)
     {
-        //
+        // TODO
     }
 
     /**
