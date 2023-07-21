@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Middleware\AuthenticateOnceWithBasicAuth;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,22 +22,25 @@ use App\Http\Controllers\RegistrationController;
 // Registration
 Route::post('/register', [RegistrationController::class, 'store']);
 
-// User
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{id}', [UserController::class, 'show']);
-Route::patch('/users/{id}', [UserController::class, 'update']);
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
+Route::middleware(AuthenticateOnceWithBasicAuth::class)->group(function () {
+    // User
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::patch('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
-// Channel 
-Route::get('/channels', [ChannelController::class, 'index']);
-Route::post('/channels', [ChannelController::class, 'store']);
-Route::get('/channels/{id}', [ChannelController::class, 'show']);
-Route::patch('/channels/{id}', [ChannelController::class, 'update']);
-Route::delete('/channels/{id}', [ChannelController::class, 'destroy']);
+    // Channel 
+    Route::get('/channels', [ChannelController::class, 'index']);
+    Route::post('/channels', [ChannelController::class, 'store']);
+    Route::get('/channels/{id}', [ChannelController::class, 'show']);
+    Route::patch('/channels/{id}', [ChannelController::class, 'update']);
+    Route::delete('/channels/{id}', [ChannelController::class, 'destroy']);
 
-// Video
-Route::get('/videos', [VideoController::class, 'index']);
-Route::post('/videos', [VideoController::class, 'store']);
-Route::get('/videos/{id}', [VideoController::class, 'show']);
-Route::patch('/videos/{id}', [VideoController::class, 'update']);
-Route::delete('/videos/{id}', [VideoController::class, 'destroy']);
+    // Video
+    Route::get('/videos', [VideoController::class, 'index']);
+    Route::post('/videos', [VideoController::class, 'store']);
+    Route::get('/videos/{id}', [VideoController::class, 'show']);
+    Route::patch('/videos/{id}', [VideoController::class, 'update']);
+    Route::delete('/videos/{id}', [VideoController::class, 'destroy']);
+});
+
