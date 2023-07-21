@@ -187,4 +187,27 @@ class VideoPage
 
         return $videoData['duration'];
     }
+
+    public function tags()
+    {
+        $xpath = $this->dom['xpath'];
+
+        if (empty($xpath)) {
+            throw new Exception('xpath is empty');
+        }
+
+        $elements = $xpath->query('//meta[@property="og:video:tag"]');
+
+        if ($elements->length > 0) {
+            $tags =  [];
+
+            foreach ($elements as $element) {
+                $tags[] = $element->getAttribute('content');
+            }
+            
+            return $tags;
+        }
+        
+        return null;
+    }
 }
