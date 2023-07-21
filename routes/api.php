@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\RegistrationController;
@@ -19,6 +20,9 @@ use App\Http\Controllers\RegistrationController;
 
 // Registration
 Route::post('/register', [RegistrationController::class, 'store']);
+
+// User
+Route::get('/users', [UserController::class, 'index']);
 
 // Channel 
 Route::get('/channels', [ChannelController::class, 'index']);
