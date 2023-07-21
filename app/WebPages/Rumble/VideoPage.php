@@ -64,6 +64,15 @@ class VideoPage
         return str_replace('/', '', $id);
     }
 
+    public function url()
+    {
+        $videoData = $this->apiData[0];
+
+        if (empty($videoData)) return null;
+
+        return $videoData['url'];
+    }
+
     public function channelName()
     {
         $xpath = $this->dom['xpath'];
