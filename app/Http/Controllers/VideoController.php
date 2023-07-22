@@ -18,6 +18,8 @@ class VideoController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Video::class);
+
         return Video::paginate();
     }
 
@@ -26,6 +28,8 @@ class VideoController extends Controller
      */
     public function store(StoreVideoRequest $request)
     {
+        $this->authorize('create', Video::class);
+
         $video = new VideoPage($request->input('url'));
 
         $channel = Channel::where('name', $video->channelName())->first();
@@ -76,7 +80,11 @@ class VideoController extends Controller
      */
     public function show(string $id)
     {
-        return Video::findOrFail($id);
+        $video = Video::find($id);
+
+        $this->authorize('view', $video);
+
+        return $video;
     }
 
     /**
@@ -84,7 +92,9 @@ class VideoController extends Controller
      */
     public function update(UpdateVideoRequest $request, string $id)
     {
-        $video = Video::findOrFail($id);
+        $video = Video::find($id);
+
+        $this->authorize('update', $video);
 
         try {
             $video->update([
@@ -111,6 +121,10 @@ class VideoController extends Controller
      */
     public function destroy(string $id)
     {
+        $video = Video::find($id);
+
+        $this->authorize('delete', $video);
+
         return Video::destroy($id);
     }
 }
