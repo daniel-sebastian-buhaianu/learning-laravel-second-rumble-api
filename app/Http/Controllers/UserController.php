@@ -14,6 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+
         return User::paginate();
     }
 
@@ -22,7 +24,11 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return User::findOrFail($id);
+        $user = User::find($id);
+
+        $this->authorize('view', $user);
+
+        return $user;
     }
 
     /**
@@ -30,7 +36,9 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+
+        $this->authorize('update', $user);
 
         $request->validate([
             'email' => ['email', 'max:255', Rule::unique('users')->ignore($user)],
@@ -39,16 +47,29 @@ class UserController extends Controller
 
         try {
             $user->update([
-                'email' => $request->input('email', $user->email),
+                'email' => $request->input('email', $user->email)
+            ]);
+        } catch(\Exception $e) {
+            return response([
+                'message' => $e->getMessage()
+            ], 500);    
+        }
+
+        if ($request->user()->cannot('updateIsAdmin', $user)) {
+            return $user;
+        }
+
+        try {
+            $user->update([
                 'is_admin' => $request->input('is_admin', $user->is_admin),
             ]);
+
+            return $user;
         } catch(\Exception $e) {
             return response([
                 'message' => $e->getMessage()
             ], 500);
         }
-
-        return $user;
     }
 
     /**
@@ -56,6 +77,10 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        return User::destroy($id);
+        $user = User::find($id);
+
+        $this->authorize('delete', $user);
+
+        return $user->delete();
     }
 }
