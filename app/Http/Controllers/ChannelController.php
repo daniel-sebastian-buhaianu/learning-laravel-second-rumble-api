@@ -17,6 +17,8 @@ class ChannelController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Channel::class);
+
         return Channel::paginate();
     }
 
@@ -25,6 +27,8 @@ class ChannelController extends Controller
      */
     public function store(StoreChannelRequest $request)
     {
+        $this->authorize('create', Channel::class);
+
         $channel = new ChannelAboutPage(request('url'));
 
         try {
@@ -51,7 +55,11 @@ class ChannelController extends Controller
      */
     public function show(string $id)
     {
-        return Channel::findOrFail($id);
+        $channel = Channel::find($id);
+
+        $this->authorize('view', $channel);
+
+        return $channel;
     }
 
     /**
@@ -59,7 +67,9 @@ class ChannelController extends Controller
      */
     public function update(UpdateChannelRequest $request, string $id)
     {
-        $channel = Channel::findOrFail($id);
+        $channel = Channel::find($id);
+
+        $this->authorize('update', $channel);
 
         $request->validate([
             'name' => [Rule::unique('channels')->ignore($channel)]
@@ -88,6 +98,10 @@ class ChannelController extends Controller
      */
     public function destroy(string $id)
     {
+        $channel = Channel::find($id);
+
+        $this->authorize('delete', $channel);
+
         return Channel::destroy($id);
     }
 }
