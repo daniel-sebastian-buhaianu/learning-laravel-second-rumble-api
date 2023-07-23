@@ -22,4 +22,16 @@ class UsersTest extends TestCase
 
         $response->assertSee('Unauthorized');
     }
+
+    /**
+     * @test
+     */
+    public function a_guest_cannot_view_a_user(): void
+    {
+        User::factory(10)->create();
+        
+        $response = $this->get('api/users/1');
+
+        $response->assertSee('Unauthorized');
+    }
 }
