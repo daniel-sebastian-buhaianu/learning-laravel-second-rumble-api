@@ -68,4 +68,24 @@ class CreateVideoTest extends TestCase
 
         $response->assertCreated();
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_cannot_create_a_video_with_valid_attributes_if_channel_doesnt_exist(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $attributes = [
+            'url' => 'https://rumble.com/v2zndx2-andrew-tate-tucker-carlson-the-interview.html'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->post('/api/videos', $attributes);
+
+        $response->assertStatus(422);
+    }
 }
