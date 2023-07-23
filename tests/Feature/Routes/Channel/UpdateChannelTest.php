@@ -122,4 +122,28 @@ class UpdateChannelTest extends TestCase
             'url' => $channel->url
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_cannot_update_a_channel_joining_date(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $channel = Channel::factory()->create();
+
+        $attributes = [
+            'joined_at' => '2021-04-05'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/channels/' . $channel->id, $attributes);
+        
+        $response->assertJsonFragment([
+            'joined_at' => $channel->joined_at
+        ]);
+    }
 }
