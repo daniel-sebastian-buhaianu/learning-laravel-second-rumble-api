@@ -84,12 +84,8 @@ class ChannelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Channel $channel)
     {
-        $channel = Channel::find($id);
-
-        $this->authorize('delete', $channel);
-
-        return Channel::destroy($id);
+        return $channel->delete();
     }
 }
