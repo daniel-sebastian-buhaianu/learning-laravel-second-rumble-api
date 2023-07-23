@@ -63,4 +63,39 @@ class CreateChannelTest extends TestCase
 
         $response->assertCreated();
     }
+
+    /**
+     * @test
+     * @dataProvider invalidChannelUrls
+     */
+    public function an_admin_cannot_create_a_channel_with_an_invalid_url(string $invalidUrl): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $attributes = [
+            'url' => $invalidUrl
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->post('/api/channels', $attributes);
+
+        $response->assertRedirect();
+    }
+
+    public function invalidChannelUrls(): array
+    {
+        return [
+            ['www.google.com'],
+            ['https://google.com'],
+            ['https://rumble.com/c/'],
+            ['https://rumble.com/c/tateconfidential/'],
+            ['https://rumble.com/c/tateconfidential/about'],
+            ['https://rumble.com/c/tateconfidential/about/'],
+            ['https://rumble.com/c/somegibrigh/asdjqw123']
+        ];
+    }
+
 }
