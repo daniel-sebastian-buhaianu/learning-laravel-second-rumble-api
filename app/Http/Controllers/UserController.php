@@ -28,12 +28,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        $user = User::find($id);
-
-        $this->authorize('update', $user);
-
         $request->validate([
             'email' => ['email', 'max:255', Rule::unique('users')->ignore($user)],
             'is_admin' => ['boolean']
