@@ -39,4 +39,22 @@ class DeleteVideoTest extends TestCase
 
         $response->assertForbidden();
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_can_delete_a_video(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $video = Video::factory()->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->delete('/api/videos/' . $video->id);
+
+        $response->assertSuccessful();
+    }
 }
