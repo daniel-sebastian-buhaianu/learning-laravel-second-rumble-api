@@ -13,7 +13,7 @@ class RegistrationTest extends TestCase
     /**
      * @test
      */
-    public function guest_can_register_with_valid_credentials(): void
+    public function a_guest_can_register_with_valid_credentials(): void
     {
         $attributes = [
             'email' => 'test@test.com',
@@ -26,7 +26,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function guest_cannot_register_with_invalid_email(): void
+    public function a_guest_cannot_register_with_invalid_email(): void
     {
         $attributes = [
             'email' => 'test.com',
@@ -39,7 +39,7 @@ class RegistrationTest extends TestCase
     }
 
     /** @test */
-    public function guest_cannot_register_with_weak_password(): void
+    public function a_guest_cannot_register_with_weak_password(): void
     {
         $attributes = [
             'email' => 'test@test.com',
