@@ -27,4 +27,24 @@ class UpdateChannelTest extends TestCase
 
         $response->assertUnauthorized();
     }
+
+    /**
+     * @test
+     */
+    public function a_user_cannot_update_a_channel(): void
+    {
+        $user = User::factory()->create();
+
+        $channel = Channel::factory()->create();
+
+        $attributes = [
+            'name' => 'A channel name'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/channels/' . $channel->id, $attributes);
+        
+        $response->assertForbidden();
+    }
 }
