@@ -23,4 +23,20 @@ class GetVideoByIdTest extends TestCase
 
         $response->assertUnauthorized();
     }
+
+    /**
+     * @test
+     */
+    public function a_user_can_get_a_video_by_id(): void
+    {
+        $user = User::factory()->create();
+        
+        $video = Video::factory()->create();
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->get('/api/videos/' . $video->id);
+
+        $response->assertSuccessful();
+    }
 }
