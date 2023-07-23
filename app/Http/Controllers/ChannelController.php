@@ -49,12 +49,8 @@ class ChannelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Channel $channel)
     {
-        $channel = Channel::find($id);
-
-        $this->authorize('view', $channel);
-
         return $channel;
     }
 
