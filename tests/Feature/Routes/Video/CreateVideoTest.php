@@ -5,6 +5,7 @@ namespace Tests\Feature\Routes\Video;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\Channel;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -42,5 +43,29 @@ class CreateVideoTest extends TestCase
         ])->post('/api/videos', $attributes);
 
         $response->assertForbidden();
+    }
+
+    /**
+     * @test
+     */
+    public function an_admin_can_create_a_video_with_valid_attributes(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->post('/api/channels', ['url' => 'https://rumble.com/c/tatespeech']);
+
+        $attributes = [
+            'url' => 'https://rumble.com/v2zndx2-andrew-tate-tucker-carlson-the-interview.html'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->post('/api/videos', $attributes);
+
+        $response->assertCreated();
     }
 }
