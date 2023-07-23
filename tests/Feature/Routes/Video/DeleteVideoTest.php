@@ -23,4 +23,20 @@ class DeleteVideoTest extends TestCase
 
         $response->assertUnauthorized();
     }
+
+    /**
+     * @test
+     */
+    public function a_user_cannot_delete_a_video(): void
+    {
+        $user = User::factory()->create();
+
+        $video = Video::factory()->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->delete('/api/videos/' . $video->id);
+
+        $response->assertForbidden();
+    }
 }
