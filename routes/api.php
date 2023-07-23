@@ -35,7 +35,7 @@ Route::middleware(AuthenticateOnceWithBasicAuth::class)->group(function () {
     Route::get('/channels', [ChannelController::class, 'index'])->can('viewAny', Channel::class);
     Route::post('/channels', [ChannelController::class, 'store'])->can('create', Channel::class);
     Route::get('/channels/{channel}', [ChannelController::class, 'show'])->can('view', 'channel');
-    Route::patch('/channels/{id}', [ChannelController::class, 'update']);
+    Route::patch('/channels/{channel}', [ChannelController::class, 'update'])->can('update', 'channel');
     Route::delete('/channels/{id}', [ChannelController::class, 'destroy']);
 
     // Video

@@ -57,12 +57,8 @@ class ChannelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateChannelRequest $request, string $id)
+    public function update(UpdateChannelRequest $request, Channel $channel)
     {
-        $channel = Channel::find($id);
-
-        $this->authorize('update', $channel);
-
         $request->validate([
             'name' => [Rule::unique('channels')->ignore($channel)]
         ]);
