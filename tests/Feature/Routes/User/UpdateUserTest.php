@@ -87,4 +87,30 @@ class UpdateUserTest extends TestCase
             'is_admin' => 0
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_can_update_any_user(): void
+    {
+        User::factory(2)->create();
+
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $attributes = [
+            'email' => 'some.dork@gmail.com',
+            'is_admin' => true
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/users/1', $attributes);
+
+        $response->assertJsonFragment([
+            'email' => 'some.dork@gmail.com',
+            'is_admin' => true
+        ]);
+    }
 }
