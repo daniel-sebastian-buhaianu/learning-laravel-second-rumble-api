@@ -42,7 +42,7 @@ class GetUserByIdTest extends TestCase
     /**
      * @test
      */
-    public function a_user_can_get_themselves_by_id(): void
+    public function a_user_can_get_their_account_by_id(): void
     {
         User::factory(2)->create();
 
