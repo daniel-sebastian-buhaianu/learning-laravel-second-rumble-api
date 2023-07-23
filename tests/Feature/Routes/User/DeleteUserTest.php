@@ -54,4 +54,22 @@ class DeleteUserTest extends TestCase
 
         $response->assertForbidden();
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_can_delete_any_user(): void
+    {
+        User::factory(2)->create();
+
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->delete('/api/users/1');
+
+        $response->assertSuccessful();
+    }
 }
