@@ -54,4 +54,22 @@ class GetUserByIdTest extends TestCase
 
         $response->assertOk();
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_can_get_any_user_by_id(): void
+    {
+        User::factory(2)->create();
+
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->get('/api/users/1');
+
+        $response->assertOk();
+    }
 }
