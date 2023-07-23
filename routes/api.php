@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Channel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -31,7 +32,7 @@ Route::middleware(AuthenticateOnceWithBasicAuth::class)->group(function () {
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->can('delete', 'user');
 
     // Channel 
-    Route::get('/channels', [ChannelController::class, 'index']);
+    Route::get('/channels', [ChannelController::class, 'index'])->can('viewAny', Channel::class);
     Route::post('/channels', [ChannelController::class, 'store']);
     Route::get('/channels/{id}', [ChannelController::class, 'show']);
     Route::patch('/channels/{id}', [ChannelController::class, 'update']);

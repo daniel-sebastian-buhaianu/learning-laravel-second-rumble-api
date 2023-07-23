@@ -17,8 +17,6 @@ class ChannelController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Channel::class);
-
         return Channel::paginate();
     }
 
