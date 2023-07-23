@@ -73,6 +73,6 @@ class DeleteChannelTest extends TestCase
             'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
         ])->delete('/api/channels/' . $channel->id . '123');
 
-        $response->assertForbidden();
+        $response->assertNotFound();
     }
 }
