@@ -22,9 +22,9 @@ class UpdateVideoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'src' => ['string', 'max:255'],
+            'src' => ['active_url', 'max:255'],
             'name' => ['string', 'max:255'],
-            'thumbnail' => ['string', 'max:255'],
+            'thumbnail' => ['active_url', 'max:255'],
             'description' => ['string'],
             'likes_count' => ['integer', 'numeric', 'min:0', 'max:65535'],
             'dislikes_count' => ['integer', 'numeric', 'min:0', 'max:65535'],
