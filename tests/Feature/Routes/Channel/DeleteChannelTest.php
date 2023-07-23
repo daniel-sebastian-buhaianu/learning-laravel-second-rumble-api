@@ -39,4 +39,22 @@ class DeleteChannelTest extends TestCase
 
         $response->assertForbidden();
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_can_delete_a_channel(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $channel = Channel::factory()->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->delete('/api/channels/' . $channel->id);
+
+        $response->assertSuccessful();
+    }
 }
