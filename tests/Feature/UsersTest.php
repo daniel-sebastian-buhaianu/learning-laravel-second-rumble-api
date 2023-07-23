@@ -88,6 +88,22 @@ class UsersTest extends TestCase
     /**
      * @test
      */
+    public function a_user_can_view_themselves(): void
+    {
+        User::factory(2)->create();
+
+        $user = User::factory()->create();
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->get('/api/users/' . $user->id);
+
+        $response->assertOk();
+    }
+
+    /**
+     * @test
+     */
     public function a_guest_cannot_update_a_user(): void
     {
         User::factory(2)->create();
