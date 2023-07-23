@@ -107,12 +107,8 @@ class VideoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Video $video)
     {
-        $video = Video::find($id);
-
-        $this->authorize('delete', $video);
-
-        return Video::destroy($id);
+        return $video->delete();
     }
 }
