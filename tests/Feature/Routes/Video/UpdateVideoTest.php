@@ -100,4 +100,28 @@ class UpdateVideoTest extends TestCase
             'id' => $video->id
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_cannot_update_a_video_channel_id(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $video = Video::factory()->create();
+
+        $attributes = [
+            'channel_id' => 'some-other-channel'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/videos/' . $video->id, $attributes);
+        
+        $response->assertJsonFragment([
+            'channel_id' => $video->channel_id
+        ]);
+    }
 }
