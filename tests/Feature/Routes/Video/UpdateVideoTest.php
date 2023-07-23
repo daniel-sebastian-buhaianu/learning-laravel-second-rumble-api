@@ -124,4 +124,28 @@ class UpdateVideoTest extends TestCase
             'channel_id' => $video->channel_id
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_cannot_update_a_video_url(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $video = Video::factory()->create();
+
+        $attributes = [
+            'url' => 'https://google.com'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/videos/' . $video->id, $attributes);
+        
+        $response->assertJsonFragment([
+            'url' => $video->url
+        ]);
+    }
 }
