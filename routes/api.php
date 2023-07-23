@@ -33,7 +33,7 @@ Route::middleware(AuthenticateOnceWithBasicAuth::class)->group(function () {
 
     // Channel 
     Route::get('/channels', [ChannelController::class, 'index'])->can('viewAny', Channel::class);
-    Route::post('/channels', [ChannelController::class, 'store']);
+    Route::post('/channels', [ChannelController::class, 'store'])->can('create', Channel::class);
     Route::get('/channels/{id}', [ChannelController::class, 'show']);
     Route::patch('/channels/{id}', [ChannelController::class, 'update']);
     Route::delete('/channels/{id}', [ChannelController::class, 'destroy']);

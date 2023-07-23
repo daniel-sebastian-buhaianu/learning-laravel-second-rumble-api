@@ -25,8 +25,6 @@ class ChannelController extends Controller
      */
     public function store(StoreChannelRequest $request)
     {
-        $this->authorize('create', Channel::class);
-
         $channel = new ChannelAboutPage(request('url'));
 
         try {
