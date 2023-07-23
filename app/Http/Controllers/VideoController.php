@@ -82,12 +82,8 @@ class VideoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVideoRequest $request, string $id)
+    public function update(UpdateVideoRequest $request, Video $video)
     {
-        $video = Video::find($id);
-
-        $this->authorize('update', $video);
-
         try {
             $video->update([
                 'src' => $request->input('src', $video->src),

@@ -43,7 +43,7 @@ Route::middleware(AuthenticateOnceWithBasicAuth::class)->group(function () {
     Route::get('/videos', [VideoController::class, 'index'])->can('viewAny', Video::class);
     Route::post('/videos', [VideoController::class, 'store'])->can('create', Video::class);
     Route::get('/videos/{video}', [VideoController::class, 'show'])->can('view', 'video');
-    Route::patch('/videos/{id}', [VideoController::class, 'update']);
+    Route::patch('/videos/{video}', [VideoController::class, 'update'])->can('update', 'video');
     Route::delete('/videos/{id}', [VideoController::class, 'destroy']);
 });
 
