@@ -28,7 +28,7 @@ Route::middleware(AuthenticateOnceWithBasicAuth::class)->group(function () {
     Route::get('/users', [UserController::class, 'index'])->can('viewAny', User::class);
     Route::get('/users/{user}', [UserController::class, 'show'])->can('view', 'user');
     Route::patch('/users/{user}', [UserController::class, 'update'])->can('update', 'user');
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->can('delete', 'user');
 
     // Channel 
     Route::get('/channels', [ChannelController::class, 'index']);
