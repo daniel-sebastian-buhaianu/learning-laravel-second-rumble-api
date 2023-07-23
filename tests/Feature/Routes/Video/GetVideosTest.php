@@ -23,4 +23,20 @@ class GetVideosTest extends TestCase
 
         $response->assertUnauthorized();
     }
+
+    /**
+     * @test
+     */
+    public function a_user_can_get_videos(): void
+    {
+        Video::factory(2)->create();
+
+        $user = User::factory()->create();
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->get('/api/videos');
+
+        $response->assertSuccessful();
+    }
 }
