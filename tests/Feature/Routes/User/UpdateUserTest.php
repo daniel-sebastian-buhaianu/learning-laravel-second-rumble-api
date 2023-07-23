@@ -42,5 +42,27 @@ class UpdateUserTest extends TestCase
         ])->patch('/api/users/1', $attributes);
 
         $response->assertStatus(403);
-    }    
+    }
+    
+    /**
+     * @test
+     */
+    public function a_user_can_update_their_email(): void
+    {
+        User::factory(2)->create();
+
+        $user = User::factory()->create();
+
+        $attributes = [
+            'email' => 'some.dork@gmail.com',
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/users/' . $user->id, $attributes);
+
+        $response->assertJsonFragment([
+            'email' => $attributes['email']
+        ]);
+    }
 }
