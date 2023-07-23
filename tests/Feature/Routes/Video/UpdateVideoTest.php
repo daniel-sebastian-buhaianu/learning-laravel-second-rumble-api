@@ -27,4 +27,24 @@ class UpdateVideoTest extends TestCase
 
         $response->assertUnauthorized();
     }
+
+    /**
+     * @test
+     */
+    public function a_user_cannot_update_a_video(): void
+    {
+        $user = User::factory()->create();
+
+        $video = Video::factory()->create();
+
+        $attributes = [
+            'name' => 'A video name'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/videos/' . $video->id, $attributes);
+        
+        $response->assertForbidden();
+    }
 }
