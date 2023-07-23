@@ -43,4 +43,24 @@ class CreateChannelTest extends TestCase
 
         $response->assertForbidden();
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_can_create_a_channel_with_a_valid_url(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $attributes = [
+            'url' => 'https://rumble.com/c/tateconfidential'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->post('/api/channels', $attributes);
+
+        $response->assertCreated();
+    }
 }
