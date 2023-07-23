@@ -74,4 +74,28 @@ class UpdateChannelTest extends TestCase
         
         $response->assertJsonFragment($attributes);
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_cannot_update_a_channel_id(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $channel = Channel::factory()->create();
+
+        $attributes = [
+            'id' => 'some id'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/channels/' . $channel->id, $attributes);
+        
+        $response->assertJsonFragment([
+            'id' => $channel->id
+        ]);
+    }
 }
