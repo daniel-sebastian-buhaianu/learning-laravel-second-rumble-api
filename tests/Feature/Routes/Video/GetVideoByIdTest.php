@@ -39,4 +39,20 @@ class GetVideoByIdTest extends TestCase
 
         $response->assertSuccessful();
     }
+
+    /**
+     * @test
+     */
+    public function a_user_cannot_get_a_video_by_id_if_it_doesnt_exist(): void
+    {
+        $user = User::factory()->create();
+        
+        $video = Video::factory()->create();
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->get('/api/videos/' . $video->id . '123');
+
+        $response->assertNotFound();
+    }
 }
