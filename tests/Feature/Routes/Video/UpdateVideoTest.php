@@ -47,4 +47,33 @@ class UpdateVideoTest extends TestCase
         
         $response->assertForbidden();
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_can_update_a_video(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $video = Video::factory()->create();
+
+        $attributes = [
+            'src' => 'https://google.com',
+            'name' => 'A new video name',
+            'thumbnail' => 'https://google.com',
+            'description' => 'Cool description',
+            'likes_count' => 120,
+            'dislikes_count' => 14,
+            'comments_count' => 40,
+            'views_count' => 102434
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/videos/' . $video->id, $attributes);
+        
+        $response->assertJsonFragment($attributes);
+    }
 }
