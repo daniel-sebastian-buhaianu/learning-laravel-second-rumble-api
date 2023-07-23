@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Video;
 use App\Models\Channel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +40,7 @@ Route::middleware(AuthenticateOnceWithBasicAuth::class)->group(function () {
     Route::delete('/channels/{channel}', [ChannelController::class, 'destroy'])->can('delete', 'channel');
 
     // Video
-    Route::get('/videos', [VideoController::class, 'index']);
+    Route::get('/videos', [VideoController::class, 'index'])->can('viewAny', Video::class);
     Route::post('/videos', [VideoController::class, 'store']);
     Route::get('/videos/{id}', [VideoController::class, 'show']);
     Route::patch('/videos/{id}', [VideoController::class, 'update']);
