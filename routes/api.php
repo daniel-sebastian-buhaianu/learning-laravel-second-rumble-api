@@ -26,7 +26,7 @@ Route::post('/register', [RegistrationController::class, 'store']);
 Route::middleware(AuthenticateOnceWithBasicAuth::class)->group(function () {
     // User
     Route::get('/users', [UserController::class, 'index'])->can('viewAny', User::class);
-    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::get('/users/{user}', [UserController::class, 'show'])->can('view', 'user');
     Route::patch('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
