@@ -1,24 +1,24 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Routes\User;
 
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UsersTest extends TestCase
+class UpdateUserTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
      * @test
      */
-    public function a_guest_cannot_delete_a_user(): void
+    public function a_guest_cannot_update_a_user(): void
     {
         User::factory(2)->create();
         
-        $response = $this->delete('api/users/1');
+        $response = $this->patch('api/users/1');
 
         $response->assertSee('Unauthorized');
     }
