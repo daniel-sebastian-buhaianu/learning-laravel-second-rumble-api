@@ -148,4 +148,28 @@ class UpdateVideoTest extends TestCase
             'url' => $video->url
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_cannot_update_a_video_uploaded_date(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $video = video::factory()->create();
+
+        $attributes = [
+            'uploaded_at' => '2021-04-05'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/videos/' . $video->id, $attributes);
+        
+        $response->assertJsonFragment([
+            'uploaded_at' => $video->uploaded_at
+        ]);
+    }
 }
