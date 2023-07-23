@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Routes\User;
 
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UsersTest extends TestCase
+class DeleteUserTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,6 +20,6 @@ class UsersTest extends TestCase
         
         $response = $this->delete('api/users/1');
 
-        $response->assertSee('Unauthorized');
+        $response->assertStatus(401);
     }
 }
