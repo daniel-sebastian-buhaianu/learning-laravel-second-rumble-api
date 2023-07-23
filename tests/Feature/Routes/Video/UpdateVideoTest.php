@@ -172,4 +172,91 @@ class UpdateVideoTest extends TestCase
             'uploaded_at' => $video->uploaded_at
         ]);
     }
+
+    /**
+     * @test
+     * @dataProvider invalidAttributes
+     */
+    public function an_admin_cannot_update_a_video_with_invalid_attributes(array $invalidAttributes): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $video = Video::factory()->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/videos/' . $video->id, $invalidAttributes);
+        
+        $response->assertRedirect();
+    }
+
+    public function invalidAttributes(): array
+    {
+        return [
+            [[
+                'src' => '',
+                'name' => '',
+                'thumbnail' => '',
+                'description' => '',
+                'likes_count' => '',
+                'comments_count' => '',
+                'views_count' => '',
+            ]],
+            [[
+                'src' => 'not a url',
+                'name' => 'some name',
+                'thumbnail' => '',
+                'description' => '',
+                'likes_count' => 'haha',
+                'comments_count' => '',
+                'views_count' => 'blaaah',
+            ]],
+            [[
+                'src' => 'https://google.com',
+                'name' => 'a name longer than 255 characters a name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 charactersa name longer than 255 characters',
+                'thumbnail' => 'https://google.com?q=google is the best!!!!',
+                'description' => 'loooooong description on repeat!! loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!loooooong description on repeat!!',
+                'likes_count' => 65536,
+                'comments_count' => 65534,
+                'views_count' => -1,
+            ]],
+            [[
+                'src' => 'https://google.com',
+                'name' => 'more realistic',
+                'thumbnail' => 'https://google.com',
+                'description' => 'cooooool',
+                'likes_count' => 0,
+                'comments_count' => 65536,
+                'views_count' => 0,
+            ]],
+            [[
+                'src' => 'https://lookslikeaurlbutisinvalidforsure.com',
+                'name' => 'more realistic',
+                'thumbnail' => 'https://google.com',
+                'description' => 'cooooool',
+                'likes_count' => 0,
+                'comments_count' => 0,
+                'views_count' => 0,
+            ]],
+            [[
+                'name' => 'more realistic',
+                'thumbnail' => 'https://lookslikeaurlbutisinvalidforsure.com',
+                'description' => 'cooooool',
+                'likes_count' => 0,
+                'comments_count' => 0,
+                'views_count' => 0,
+            ]],
+            [[
+                'src' => 'dont know what other tests to write',
+                'name' => 'dont know what other tests to write',
+                'thumbnail' => 'dont know what other tests to write',
+                'description' => 'dont know what other tests to write',
+                'likes_count' => 'dont know what other tests to write',
+                'comments_count' => 'dont know what other tests to write',
+                'views_count' => 'dont know what other tests to write',
+            ]],
+        ];
+    }
 }
