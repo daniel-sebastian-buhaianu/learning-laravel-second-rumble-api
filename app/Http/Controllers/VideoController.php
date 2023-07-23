@@ -26,8 +26,6 @@ class VideoController extends Controller
      */
     public function store(StoreVideoRequest $request)
     {
-        $this->authorize('create', Video::class);
-
         $video = new VideoPage($request->input('url'));
 
         $channel = Channel::where('name', $video->channelName())->first();
