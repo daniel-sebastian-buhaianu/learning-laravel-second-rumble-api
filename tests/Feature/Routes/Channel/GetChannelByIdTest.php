@@ -39,4 +39,20 @@ class GetChannelByIdTest extends TestCase
 
         $response->assertSuccessful();
     }
+
+    /**
+     * @test
+     */
+    public function a_user_cannot_get_a_channel_by_id_if_channel_doesnt_exist(): void
+    {
+        $user = User::factory()->create();
+        
+        $channel = Channel::factory()->create();
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->get('/api/channels/' . $channel->id . '123');
+
+        $response->assertForbidden();
+    }
 }
