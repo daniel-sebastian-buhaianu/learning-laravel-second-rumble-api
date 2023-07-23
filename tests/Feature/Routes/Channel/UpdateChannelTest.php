@@ -146,4 +146,69 @@ class UpdateChannelTest extends TestCase
             'joined_at' => $channel->joined_at
         ]);
     }
+
+    /**
+     * @test
+     * @dataProvider invalidAttributes
+     */
+    public function an_admin_cannot_update_a_channel_with_invalid_attributes(array $invalidAttributes): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $channel = Channel::factory()->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/channels/' . $channel->id, $invalidAttributes);
+        
+        $response->assertRedirect();
+    }
+
+    public function invalidAttributes(): array
+    {
+        return [
+            [[   
+                'name' => 'A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters A name thats longer than 255 characters ',
+                'description' => 'A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters A description thats longer than 255 characters ',
+                'banner' => 'this is not a url',
+                'avatar' => 'this is not a url',
+                'followers_count' => 'clearly not an integer',
+                'videos_count' => 'clearly not an integer',
+            ]],
+            [[
+                'name' => 'a valid name',
+                'description' => 'a valid description',
+                'banner' => 'invalid',
+                'avatar' => 'invalid',
+                'followers_count' => 1200,
+                'videos_count' => 32
+            ]],
+            [[
+                'name' => 'a valid name',
+                'description' => 'a valid description',
+                'banner' => 'https://google.com?q=valid url',
+                'avatar' => 'https://google.com?q=valid url',
+                'followers_count' => -1,
+                'videos_count' => 20
+            ]],
+            [[
+                'name' => 'a valid name',
+                'description' => 'a valid description',
+                'banner' => 'https://google.com?q=valid url',
+                'avatar' => 'https://google.com?q=valid url',
+                'followers_count' => 8000000001,
+                'videos_count' => 20
+            ]],
+            [[
+                'name' => 'a valid name',
+                'description' => 'a valid description',
+                'banner' => 'https://google.com?q=valid url',
+                'avatar' => 'https://google.com?q=valid url',
+                'followers_count' => 800000000,
+                'videos_count' => 65536
+            ]],
+        ];
+    }
 }
