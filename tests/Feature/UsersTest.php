@@ -46,4 +46,16 @@ class UsersTest extends TestCase
 
         $response->assertSee('Unauthorized');
     }
+
+    /**
+     * @test
+     */
+    public function a_guest_cannot_delete_a_user(): void
+    {
+        User::factory(2)->create();
+        
+        $response = $this->delete('api/users/1');
+
+        $response->assertSee('Unauthorized');
+    }
 }
