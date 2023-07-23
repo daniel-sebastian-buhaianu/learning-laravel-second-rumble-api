@@ -74,12 +74,8 @@ class VideoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Video $video)
     {
-        $video = Video::find($id);
-
-        $this->authorize('view', $video);
-
         return $video;
     }
 
