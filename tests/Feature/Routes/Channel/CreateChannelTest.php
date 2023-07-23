@@ -98,4 +98,24 @@ class CreateChannelTest extends TestCase
         ];
     }
 
+    /** @test */
+    public function an_admin_cannot_create_a_channel_that_already_exists(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $channel = Channel::factory()->create();
+
+        $attributes = [
+            'url' => $channel->url
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->post('/api/channels', $attributes);
+
+        $response->assertRedirect();
+    }
+
 }
