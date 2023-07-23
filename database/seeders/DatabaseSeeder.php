@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Video;
-use App\Models\Channel;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 
@@ -15,6 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $this->call([
+            UserSeeder::class,
+        ]);
     }
 }
