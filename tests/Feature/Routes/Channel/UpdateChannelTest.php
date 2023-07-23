@@ -98,4 +98,28 @@ class UpdateChannelTest extends TestCase
             'id' => $channel->id
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function an_admin_cannot_update_a_channel_url(): void
+    {
+        $user = User::factory()->create([
+            'is_admin' => true
+        ]);
+
+        $channel = Channel::factory()->create();
+
+        $attributes = [
+            'url' => 'https://google.com'
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->patch('/api/channels/' . $channel->id, $attributes);
+        
+        $response->assertJsonFragment([
+            'url' => $channel->url
+        ]);
+    }
 }
