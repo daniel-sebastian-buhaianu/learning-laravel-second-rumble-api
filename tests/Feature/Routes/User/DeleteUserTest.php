@@ -22,4 +22,20 @@ class DeleteUserTest extends TestCase
 
         $response->assertStatus(401);
     }
+
+    /**
+     * @test
+     */
+    public function a_user_can_delete_their_account(): void
+    {
+        User::factory(2)->create();
+
+        $user = User::factory()->create();
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Basic ' . base64_encode($user->email . ':' . 'Abc123000!'),
+        ])->delete('/api/users/' . $user->id);
+
+        $response->assertSuccessful();
+    }
 }
